@@ -169,7 +169,12 @@ app.get('/api/admin/get-script', ensureAuthenticated, (req, res) => {
 
 // --- PAGE ROUTES ---
 
-// Serve the main page
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'main.html'));
 });
