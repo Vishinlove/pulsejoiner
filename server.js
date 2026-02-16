@@ -175,13 +175,17 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// The root route now serves the main public page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'main.html'));
 });
 
-// Admin-only area
+// The admin panel is now on a protected route, for the admin only
 app.get('/admin', (req, res) => {
-    if (!req.session.user || req.session.user.id !== process.env.ADMIN_USER_ID) {
+    // We need to check for both authentication and if the user is the admin.
+    // The user profile from Discord is in req.user.
+    // Make sure to add ADMIN_USER_ID to your environment variables.
+    if (!req.isAuthenticated() || req.user.id !== process.env.ADMIN_USER_ID) {
         return res.redirect('/');
     }
     res.sendFile(path.join(__dirname, 'index.html'));
