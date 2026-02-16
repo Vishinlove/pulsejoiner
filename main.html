@@ -12,6 +12,10 @@
 <body>
     <h1>Welcome to Pulse Joiner</h1>
     <p>Main website content (slots, auctions, renting) will be built here.</p>
-    <a href="/login">Login with Discord</a>
+    <a href="/logout">Logout</a>
+
+    <% if (user && user.id === process.env.ADMIN_USER_ID) { %>
+      <p><a href="/admin">Admin Panel</a></p>
+    <% } %>
 </body>
 </html>

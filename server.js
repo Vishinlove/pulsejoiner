@@ -175,9 +175,18 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// The root route now serves the main public page
+// The root route is now protected
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'main.html'));
+    if (req.isAuthenticated()) {
+        res.sendFile(path.join(__dirname, 'main.html'));
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// Route to serve the login page
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // The admin panel is now on a protected route, for the admin only
