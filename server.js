@@ -169,17 +169,16 @@ app.get('/api/admin/get-script', ensureAuthenticated, (req, res) => {
 
 // --- PAGE ROUTES ---
 
-// The root route now shows a login page if not authenticated
+// Serve the main page
 app.get('/', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.redirect('/admin');
-    } else {
-        res.sendFile(path.join(__dirname, 'login.html'));
-    }
+    res.sendFile(path.join(__dirname, 'main.html'));
 });
 
-// The admin panel is now on a protected route
-app.get('/admin', ensureAuthenticated, (req, res) => {
+// Admin-only area
+app.get('/admin', (req, res) => {
+    if (!req.session.user || req.session.user.id !== process.env.ADMIN_USER_ID) {
+        return res.redirect('/');
+    }
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
